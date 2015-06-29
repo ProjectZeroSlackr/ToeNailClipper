@@ -1,3 +1,6 @@
+// Last updated: March 12, 2008
+// ~Keripo
+
 /* The Toenail Clipping Program Source File
 Version 2.5 for iPod Linux(Ported by Brandon Holland)
 Started programming on Tuesday, June 14, 2005 at 5:00:pm PST
@@ -22,7 +25,6 @@ iPod Linux Port Changes:
 
 int checkdata();
 void welcome();
-char runcheck();
 int checkstatus();
 void resetstatus();
 int restart();
@@ -46,10 +48,6 @@ int main()
   welcome();
   do
   {
-    if (runcheck() == 'd')
-    {
-      return 0;
-    }
     if (checkdata() == 1)
     { resetstatus(); }
     do
@@ -98,23 +96,7 @@ int checkdata()
 void welcome()
 {
   printf("Welcome to TNC!\n\n");
-  printf("m = menu d = play\n");
-  printf("w = rew  f = ffwd\n");
-  printf("h = hold\n");
   return;
-}
-
-char runcheck()
-{
-  char welcomechoice;
-  do
-  {
-    printf("\nrun this?\n");
-    printf("[y(m)/n(d)]: ");
-    scanf(" %c", &welcomechoice);
-  } 
-  while ((welcomechoice != 'm') && (welcomechoice != 'd'));
-  return (welcomechoice);
 }
 
 int checkstatus()
@@ -139,11 +121,11 @@ int restart()
   do
   {
     printf("start over?\n");
-    printf("[y(m)/n(d)]: ");
+    printf("[y/n]: ");
     scanf(" %c", &restartchoice);
   } 
-  while ((restartchoice != 'm') && (restartchoice != 'd'));
-  if (restartchoice == 'm')
+  while ((restartchoice != 'y') && (restartchoice != 'n'));
+  if (restartchoice == 'y')
   {
     resetstatus();
     return 0;
@@ -155,7 +137,7 @@ void displaystatus()
 {
   printf("\nstatus:\n\n");
   printf("left  right\n");
-  printf("hfwdm mdwfh\n");
+  printf("abcde edcba\n");
   printf("%s ", leftfoot);
   printf("%s", rightfoot);
   printf("\n\n");
@@ -169,11 +151,11 @@ int continueclipping()
   do
   {
     printf("clip now?\n");
-    printf("[y(m)/n(d)]: ");
+    printf("[y/n]: ");
     scanf(" %c", &continuechoice);
   } 
-  while ((continuechoice != 'm') && (continuechoice != 'd'));
-  if (continuechoice == 'm')
+  while ((continuechoice != 'y') && (continuechoice != 'n'));
+  if (continuechoice == 'y')
   {
     gettoe();
     return 0;
@@ -193,10 +175,10 @@ char whichfoot()
     do
     {
      printf("\nwhich foot?\n");
-     printf("[l(w)/r(f)]: ");
+     printf("[l/r)]: ");
      scanf(" %c", &foot);
     } 
-    while ((foot != 'w') && (foot != 'f'));
+    while ((foot != 'l') && (foot != 'r'));
   }
   return (foot);
 }
@@ -206,29 +188,29 @@ int whichtoe(char foot)
   char footname[5];
   char toe;
   short int whichtoe;
-  if (foot == 'w')
+  if (foot == 'l')
   { 
     strcpy(footname, "left"); 
     do
     {
       printf("\nwhich toenail?\n");
-      printf("[h,f,w,d,m]: ");
+      printf("[a,b,c,d,e]: ");
       scanf(" %c", &toe); 
       switch(toe)
       {
-        case 'h':
+        case 'a':
         whichtoe = 1;
         break;
-        case 'f':
+        case 'b':
         whichtoe = 2;
         break;
-        case 'w':
+        case 'c':
         whichtoe = 3;
         break;
         case 'd':
         whichtoe = 4;
         break;
-        case 'm':
+        case 'e':
         whichtoe = 5;
         break;
         default:
@@ -238,29 +220,29 @@ int whichtoe(char foot)
     } 
     while ((whichtoe < 1) || (whichtoe > 5));
   }
-  if (foot == 'f')
+  if (foot == 'r')
   { 
     strcpy(footname, "right"); 
     do
     {
       printf("\nwhich toenail?\n");
-      printf("[m,d,w,f,h]: ");
+      printf("[e,d,c,b,a]: ");
       scanf(" %c", &toe);
       switch(toe)
       {
-        case 'm':
+        case 'e':
         whichtoe = 1;
         break;
         case 'd':
         whichtoe = 2;
         break;
-        case 'w':
+        case 'c':
         whichtoe = 3;
         break;
-        case 'f':
+        case 'b':
         whichtoe = 4;
         break;
-        case 'h':
+        case 'a':
         whichtoe = 5;
         break;
         default:
@@ -275,7 +257,7 @@ int whichtoe(char foot)
 
 int checktoe(char foot, short int toenumber)
 {
-  if (foot == 'w')
+  if (foot == 'l')
   {
     if (leftfoot[(toenumber - 1)] == '*')
     {
@@ -296,7 +278,7 @@ int checktoe(char foot, short int toenumber)
 
 void cliptoe(char foot, short int toenumber)
 {
-  if (foot == 'w')
+  if (foot == 'l')
   { leftfoot[(toenumber - 1)] = '*'; } 
   else
   { rightfoot[(toenumber - 1)] = '*'; }
@@ -319,13 +301,14 @@ void gettoe()
 void goodbye()
 {
   printf("\nTNC version 2.5.\n");
-  printf("(C)Copyrights TNC\n"); 
+  printf("(C)Copyrights TNC\n");
   printf("Paul Taylor,2005.\n");
   printf("TNC is GNU GPL'd.\n");
   printf("Thanx to Jesse\n");
   printf("for the TNC idea.\n");
   printf("iPod port done by\n");
-  printf("Brandon Holland.\n\n"); 
+  printf("Brandon Holland.\n");
+  printf("Modified by Keripo\n\n");
   return;
 }
 
@@ -337,11 +320,11 @@ int close()
     if (checkstatus() == 1)
     { resetstatus(); }
     printf("close now?\n");
-    printf("[y(m)/n(d)]: ");
+    printf("[y/n]: ");
     scanf(" %c", &close);
   } 
-  while ((close != 'm') && (close != 'd'));
-  if (close == 'm')
+  while ((close != 'y') && (close != 'n'));
+  if (close == 'y')
   {  
     printf("\nbye-bye!\n");
     return 1;
